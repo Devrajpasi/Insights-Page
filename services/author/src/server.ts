@@ -2,10 +2,24 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { sql } from './utils/db.js';
 import blogRoutes from './routes/blogs.js';
+import { v2 as cloudinary } from 'cloudinary';
+import { connectRabbitMQ } from './utils/rabbitmq.js';
+import cors from 'cors';
 
 dotenv.config();
 
+ cloudinary.config({ 
+        cloud_name: process.env.Cloud_Name as string, 
+        api_key: process.env.Cloud_Api_Key as string, 
+        api_secret: process.env.Cloud_Api_Secret as string 
+    });
+
 const app=express();
+
+app.use(express.json());
+app.use(cors());
+
+connectRabbitMQ();
 
 const port =process.env.PORT;
 

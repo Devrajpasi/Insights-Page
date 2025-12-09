@@ -2,8 +2,16 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { sql } from './utils/db.js';
 import blogRoutes from './routes/blogs.js';
+import { v2 as cloudinary } from 'cloudinary';
+import { connectRabbitMQ } from './utils/rabbitmq.js';
 dotenv.config();
+cloudinary.config({
+    cloud_name: process.env.Cloud_Name,
+    api_key: process.env.Cloud_Api_Key,
+    api_secret: process.env.Cloud_Api_Secret
+});
 const app = express();
+connectRabbitMQ();
 const port = process.env.PORT;
 async function initDB() {
     try {
