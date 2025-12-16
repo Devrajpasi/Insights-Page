@@ -1,5 +1,5 @@
 
-import type {Request,Response} from 'express';
+
 import User from '../model/User.js';
 import jwt from 'jsonwebtoken';
 import TryCatch from '../utils/TryCatch.js';
@@ -23,7 +23,7 @@ export const loginUser=TryCatch(async(req,res)=>{
 
   oauth2client.setCredentials(googleRes.tokens);
 
-  const userRes=await  axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token =${googleRes.tokens.access_token}`)
+  const userRes=await  axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`)
 
 
      const {email,name,picture}=userRes.data;
@@ -46,8 +46,8 @@ export const loginUser=TryCatch(async(req,res)=>{
 
       res.status(200).json({
         message:"User logged in successfully",
-        
-        token,user
+        token,
+        user
       });
 
 });

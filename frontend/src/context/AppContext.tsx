@@ -8,6 +8,8 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import Cookies  from 'js-cookie';
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
+import {GoogleOAuthProvider} from '@react-oauth/google'
+
 
 
 export interface User{
@@ -34,7 +36,12 @@ export interface Blog{
 }
 
 interface AppContextType{
-    user:User | null
+    user:User | null ;
+    loading : boolean;
+    isAuth : boolean;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -78,7 +85,12 @@ export const AppProvider:React.FC<AppProviderProps>=({
         fetchUser()
     },[])
 
-    return <AppContext.Provider value={{user}}>{children}<Toaster /></AppContext.Provider>
+    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser}}>
+      <GoogleOAuthProvider clientId={process.env.google_client_id!}>
+        {children}
+        <Toaster />
+        </GoogleOAuthProvider>
+        </AppContext.Provider>
 }
 
 export const useAppData=():AppContextType=>{

@@ -3,8 +3,21 @@ import jwt from 'jsonwebtoken';
 import TryCatch from '../utils/TryCatch.js';
 import getBuffer from '../utils/dataUri.js';
 import { v2 as cloudinary } from 'cloudinary';
+import { oauth2client } from '../utils/GoogleConfig.js';
+import axios from 'axios';
 export const loginUser = TryCatch(async (req, res) => {
-    const { email, name, image } = req.body;
+    const { code } = req.body;
+    if (!code) {
+        res.status(400).json({
+            message: "Authorization code is required"
+        });
+        return;
+    }
+    const googleRes = await oauth2client.getToken(code);
+    oauth2client.setCredentials(googleRes.tokens);
+    const userRes = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`);
+    const { email, name, picture } = userRes.data;
+    const image = picture;
     let user = await User.findOne({ email });
     if (!user) {
         user = await User.create({
@@ -18,7 +31,8 @@ export const loginUser = TryCatch(async (req, res) => {
     });
     res.status(200).json({
         message: "User logged in successfully",
-        token, user
+        token,
+        user
     });
 });
 export const myProfile = TryCatch(async (req, res) => {

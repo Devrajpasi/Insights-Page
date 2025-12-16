@@ -1,14 +1,16 @@
 import amqp from 'amqplib';
 import { redisClient } from '../server.js';
 import { sql } from './db.js';
+import dotenv from 'dotenv';
+dotenv.config();
 export const startCacheConsumer = async () => {
     try {
         const connection = await amqp.connect({
             protocol: 'amqp',
             hostname: 'localhost',
             port: 5672,
-            username: 'admin',
-            password: 'admin123'
+            username: process.env.USERNAME,
+            password: process.env.PASSWORD
         });
         const channel = await connection.createChannel();
         const queueName = "cache-invalidation";
