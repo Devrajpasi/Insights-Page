@@ -8,6 +8,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import Cookies  from 'js-cookie';
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import {GoogleOAuthProvider} from '@react-oauth/google'
 
 
@@ -42,6 +43,7 @@ interface AppContextType{
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+    logoutUser:()=>Promise<void>;
 }
 
 
@@ -80,13 +82,21 @@ export const AppProvider:React.FC<AppProviderProps>=({
   }
 }
 
+async function logoutUser(){
+  Cookies.remove("token");
+  setUser(null);
+  setIsAuth(false);
+
+  toast.success("Logged out successfully");
+}
+
 
     useEffect(()=>{
         fetchUser()
     },[])
 
-    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser}}>
-      <GoogleOAuthProvider clientId={process.env.google_client_id!}>
+    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser}}>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
         {children}
         <Toaster />
         </GoogleOAuthProvider>
