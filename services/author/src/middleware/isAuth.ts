@@ -32,7 +32,7 @@ export const isAuth = async (
             return;
         }
 
-        const token = authHeader.split(" ")[1];
+        const token = authHeader.split(" ")[1]!;
 
         const decodeValue = jwt.verify(
             token,

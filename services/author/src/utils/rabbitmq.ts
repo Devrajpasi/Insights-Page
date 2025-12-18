@@ -8,8 +8,8 @@ export const connectRabbitMQ=async()=>{
             protocol:'amqp',
             hostname:'localhost',
             port:5672,
-            username:'admin',
-            password:'admin123'
+            username:process.env.RABBITMQ_USER!,
+            password:process.env.RABBITMQ_PASSWORD!
         })
 
         channel=await connection.createChannel();

@@ -9,8 +9,8 @@ export const startCacheConsumer = async () => {
             protocol: 'amqp',
             hostname: 'localhost',
             port: 5672,
-            username: process.env.USERNAME,
-            password: process.env.PASSWORD
+            username: process.env.RABBITMQ_USER,
+            password: process.env.RABBITMQ_PASSWORD
         });
         const channel = await connection.createChannel();
         const queueName = "cache-invalidation";
@@ -48,6 +48,7 @@ export const startCacheConsumer = async () => {
         });
     }
     catch (error) {
+        console.error(error);
         console.error("❌ Failed to start rabbitmq consumer");
     }
 };

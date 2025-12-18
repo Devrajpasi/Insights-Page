@@ -5,7 +5,8 @@ import cloudinary from "cloudinary";
 import TryCatch from "../utils/TryCatch.js";
 import { invalidateChacheJob } from "../utils/rabbitmq.js";
 import { GoogleGenAI } from "@google/genai";
-import { raw } from "express";
+
+
 
 
 export const createBlog=TryCatch(async(req:AuthenticatedRequest,res)=>{
@@ -136,47 +137,40 @@ export const deleteBlog = TryCatch(async (req: AuthenticatedRequest, res) => {
   });
 });
 
-export const aiTitleResponse=TryCatch(async(req,res)=>{
-      const {text}=req.body;
+export const aiTitleResponse = TryCatch(async (req, res) => {
+  const { text } = req.body;
 
-      const prompt=`Correct the grammar of the following blog title and return only the corrected
-title without any additional text, formatting, or symbols: "${text}"`;
-
-let result;
-
-const ai =new GoogleGenAI({
-     apiKey:process.env.Gemini_Api_Key!,
-});
-
-
-async function main(){
-  const response =await ai.models.generateContent({
-    model:'gemini-2.0-flash',
-    contents:prompt,
-  })
-
-  let rawtext="";
-
-  if(!rawtext){
-     res.status(500).json({
-      message:"something went wrong",
-     })
-
-     return;
+  if (!text) {
+    return res.status(400).json({ message: "Text is required" });
   }
 
-   result = rawtext
-      .replace(/\*\*/g, "")
-      .replace(/[\r\n]+/g, "")
-      .replace(/[*_`~]/g, "")
-      .trim();
+  const prompt = `Correct the grammar of the following blog title and return only the corrected title without any extra text: "${text}"`;
+
+  const ai = new GoogleGenAI({
+    apiKey: process.env.Gemini_Api_Key!,
+  });
+
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+  });
+
+  if (!result.text) {
+  return res.status(500).json({ message: "AI response has no text()" });
 }
 
-await main();
-
-res.json(result)
+const rawtext = result.text;
 
 
+  if (!rawtext) {
+    return res.status(500).json({ message: "AI did not return text" });
+  }
+
+  const cleaned = rawtext
+    .replace(/\*\*/g, "")
+    .replace(/[\r\n]+/g, " ")
+    .replace(/[*_`~]/g, "")
+    .trim();
+
+  res.json(cleaned); 
 });
-
-
