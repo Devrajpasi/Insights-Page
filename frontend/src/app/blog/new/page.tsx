@@ -107,7 +107,7 @@ const AddBlog = () => {
     };
 
     const [aiTitle, setAiTitle] = useState(false);
-    
+
 
     const aiTitleResponse = async () => {
         try {
@@ -127,6 +127,51 @@ const AddBlog = () => {
             console.log(error);
         } finally {
             setAiTitle(false);
+        }
+    };
+
+
+    const [aiDescripiton, setAiDescription] = useState(false);
+
+    const aiDescriptionResponse = async () => {
+        try {
+            setAiDescription(true);
+            const { data } = await axios.post<string>(
+                `${author_service}/api/v1/ai/description`,
+                {
+                    title: formData.title,
+                    description: formData.description,
+                }
+            );
+            setFormData({ ...formData, description: data });
+        } catch (error) {
+            toast.error("Problem while fetching from ai");
+            console.log(error);
+        } finally {
+            setAiDescription(false);
+        }
+    };
+
+    interface AiBlogResponse {
+        html: string;
+    }
+
+
+    const [aiBlogLoading, setAiBlogLoading] = useState(false);
+
+    const aiBlogResponse = async () => {
+        try {
+            setAiBlogLoading(true);
+            const { data } = await axios.post<AiBlogResponse>(`${author_service}/api/v1/ai/blog`, {
+                blog: formData.blogcontent,
+            });
+            setContent(data.html);
+            setFormData({ ...formData, blogcontent: data.html });
+        } catch (error: any) {
+            toast.error("Problem while fetching from ai");
+            console.log(error);
+        } finally {
+            setAiBlogLoading(false);
         }
     };
 
@@ -165,12 +210,31 @@ const AddBlog = () => {
                             )}
                         </div>
 
+
+
                         <Label>Description</Label>
-                        <div className='flex justify-center items-center gap-2'>
-                            <Input name="description" value={formData.description} onChange={handleInputChange} placeholder='Enter blog Description' required />
-                            <Button type="button" >
-                                <RefreshCw></RefreshCw>
-                            </Button>
+                        <div className="flex justify-center items-center gap-2">
+                            <Input
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                placeholder="Enter Blog descripiton"
+                                className={
+                                    aiDescripiton ? "animate-pulse placeholder:opacity-60" : ""
+                                }
+                                required
+                            />
+                            {formData.title === "" ? (
+                                ""
+                            ) : (
+                                <Button
+                                    onClick={aiDescriptionResponse}
+                                    type="button"
+                                    disabled={aiDescripiton}
+                                >
+                                    <RefreshCw className={aiDescripiton ? "animate-spin" : ""} />
+                                </Button>
+                            )}
                         </div>
 
                         <Label>Category</Label>
@@ -197,14 +261,22 @@ const AddBlog = () => {
 
                         <div>
                             <Label>Blog Content</Label>
-                            <div className='flex justify-between items-center'>
-                                <p className='text-sm text-muted-foreground'>
-                                    Paste your blog or type here.. You can use rich text formatting . Please add image after improving you grammer
+                            <div className="flex justify-between items-center mb-2">
+                                <p className="text-sm text-muted-foreground">
+                                    Paste you blog or type here. You can use rich text formatting.
+                                    Please add image after improving your grammer
                                 </p>
-                                <Button type="button" size={"sm"}>
-                                    <RefreshCw size={16}>
-                                        <span className='ml-2'>Improve Grammar</span>
-                                    </RefreshCw>
+                                <Button
+                                    type="button"
+                                    size={"sm"}
+                                    onClick={aiBlogResponse}
+                                    disabled={aiBlogLoading}
+                                >
+                                    <RefreshCw
+                                        size={16}
+                                        className={aiBlogLoading ? "animate-spin" : ""}
+                                    />
+                                    <span className="ml-2">Fix Grammer</span>
                                 </Button>
                             </div>
 
