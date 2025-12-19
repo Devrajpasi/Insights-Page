@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
-const blogCategories = [
+export const blogCategories = [
     "Technology",
     "Health",
     "Finance",

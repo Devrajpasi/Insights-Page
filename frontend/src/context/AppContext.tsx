@@ -44,6 +44,11 @@ interface AppContextType{
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
     logoutUser:()=>Promise<void>;
+    blogs: Blog[] | null;
+    blogLoading:boolean;
+    setsearchQuery:React.Dispatch<React.SetStateAction<string>>
+    searchQuery:string;
+    setcategory:React.Dispatch<React.SetStateAction<string>>
 }
 
 
@@ -82,6 +87,26 @@ export const AppProvider:React.FC<AppProviderProps>=({
   }
 }
 
+const [blogLoading, setblogLoading] = useState(true)
+const [blogs, setBlogs] = useState<Blog[] | null>(null)
+const [category, setcategory] = useState("")
+const [searchQuery, setsearchQuery] = useState("")
+
+async function fetchBlogs() {
+  setblogLoading(true);
+  try {
+    const {data}=await axios.get<Blog[]>(`${blog_service}/api/v1/blog/all?searchQuery=${searchQuery}&category=${category}`);
+
+    setBlogs(data);
+  }
+  catch (error) {
+     console.log(error);
+  }
+  finally{
+     setblogLoading(false);
+  }
+}
+
 async function logoutUser(){
   Cookies.remove("token");
   setUser(null);
@@ -95,7 +120,11 @@ async function logoutUser(){
         fetchUser()
     },[])
 
-    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser}}>
+    useEffect(()=>{
+      fetchBlogs();
+    },[searchQuery,category])
+
+    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser,blogs,blogLoading,setcategory,setsearchQuery,searchQuery}}>
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
         {children}
         <Toaster />
