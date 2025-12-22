@@ -1,3 +1,4 @@
+import type { AuthenticatedRequest } from "../middleware/isAuth.js";
 import { redisClient } from "../server.js";
 import TryCatch from "../utils/TryCatch.js";
 import { sql } from "../utils/db.js";
@@ -88,3 +89,44 @@ export const getSingleBlog = TryCatch(async (req, res) => {
     responseData
   });
 });
+
+
+export const addComment=TryCatch(async(req:AuthenticatedRequest,res)=>{
+  const {id:blogid}=req.params;
+  const {comment}=req.body;
+
+  await sql`INSERT INTO comments (comment,blogid,userid,username) VALUES (${comment},${blogid},${req.user?._id},${req.user?.name}) RETURNING`;
+
+  res.json({
+    message:"Comment Added",
+  })
+})
+
+export const getAllComments=TryCatch(async(req , res)=>{
+   const {id}=req.params;
+
+   const comments=await sql`SELECT * FROM comments WHERE blogid = ${id} ORDER BY create_at DESC`;
+
+   res.json(comments)
+})
+
+export const deleteComment=TryCatch(async(req:AuthenticatedRequest,res)=>{
+    const {commentid}=req.params;
+
+    const comment=await sql`SELECT * FROM comments WHERE id = ${commentid}`
+
+    if(comment[0]?.userid !==req.user?._id){
+      res.status(401).json({
+        message:"You are not owner of this comment"
+      })
+      return;
+    }
+
+    await sql`DELETE FROM comments WHERE id = ${commentid}`
+
+    res.json({
+      message:"Comment Deleted"
+    })
+
+
+})
