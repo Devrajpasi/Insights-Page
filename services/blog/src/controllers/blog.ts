@@ -95,7 +95,7 @@ export const addComment=TryCatch(async(req:AuthenticatedRequest,res)=>{
   const {id:blogid}=req.params;
   const {comment}=req.body;
 
-  await sql`INSERT INTO comments (comment,blogid,userid,username) VALUES (${comment},${blogid},${req.user?._id},${req.user?.name}) RETURNING`;
+  await sql`INSERT INTO comments (comment,blogid,userid,username) VALUES (${comment},${blogid},${req.user?._id},${req.user?.name}) RETURNING *`;
 
   res.json({
     message:"Comment Added",
@@ -107,7 +107,7 @@ export const getAllComments=TryCatch(async(req , res)=>{
 
    const comments=await sql`SELECT * FROM comments WHERE blogid = ${id} ORDER BY create_at DESC`;
 
-   res.json(comments)
+   res.json({comments})
 })
 
 export const deleteComment=TryCatch(async(req:AuthenticatedRequest,res)=>{
