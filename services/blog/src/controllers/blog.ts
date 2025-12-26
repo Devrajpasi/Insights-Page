@@ -130,3 +130,48 @@ export const deleteComment=TryCatch(async(req:AuthenticatedRequest,res)=>{
 
 
 })
+
+export const savedBlog = TryCatch(async (req: AuthenticatedRequest, res) => {
+  const { blogid } = req.params;
+  const userid = req.user?._id;
+
+  if (!blogid || !userid) {
+    return res.status(400).json({
+      message: "Missing blog id or user id",
+    });
+  }
+
+  // ✅ correct query
+  const existing = await sql`
+    SELECT * FROM savedblogs 
+    WHERE userid = ${userid} AND blogid = ${blogid}
+  `;
+
+  if (existing.length === 0) {
+    // ✅ correct insert
+    await sql`
+      INSERT INTO savedblogs (blogid, userid) 
+      VALUES (${blogid}, ${userid})
+    `;
+
+    return res.json({
+      message: "Blog saved",
+    });
+  } else {
+    await sql`
+      DELETE FROM savedblogs 
+      WHERE userid = ${userid} AND blogid = ${blogid}
+    `;
+
+    return res.json({
+      message: "Blog unsaved",
+    });
+  }
+});
+
+
+export const getSavedBlog=TryCatch(async(req:AuthenticatedRequest,res)=>{
+  const blogs=await sql`SELECT * FROM savedblogs WHERE userid=${req.user?._id}`;
+
+  res.json(blogs)
+})
