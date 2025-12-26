@@ -12,6 +12,15 @@ import { toast } from "react-hot-toast";
 import {GoogleOAuthProvider} from '@react-oauth/google'
 
 
+export const blogCategories = [
+  "Techonlogy",
+  "Health",
+  "Finance",
+  "Travel",
+  "Education",
+  "Entertainment",
+  "Study",
+];
 
 export interface User{
      _id:string;
@@ -32,8 +41,15 @@ export interface Blog{
     image:string;
     category:string;
     author:string;
-    createdAt:string;
+    create_at:string;
 
+}
+
+interface SavedBlogType{
+  id:string;
+  userid:string;
+  blogid:string;
+  create_at:string;
 }
 
 interface AppContextType{
@@ -49,6 +65,9 @@ interface AppContextType{
     setsearchQuery:React.Dispatch<React.SetStateAction<string>>
     searchQuery:string;
     setcategory:React.Dispatch<React.SetStateAction<string>>
+    fetchBlogs:()=>Promise<void>;
+    savedBlogs:SavedBlogType[] | null;
+    getSavedBlogs:()=>Promise<void>
 }
 
 
@@ -107,6 +126,22 @@ async function fetchBlogs() {
   }
 }
 
+const [savedBlogs, setSavedBlogs] = useState<SavedBlogType[] | null>(null);
+async function getSavedBlogs(){
+  const token=Cookies.get("token")
+   try{
+      const {data}=await axios.get<SavedBlogType[]>(`${blog_service}/api/v1/blog/saved/all`,{
+         headers:{
+          Authorization:`Bearer ${token}`,
+         }
+      })
+      setSavedBlogs(data)
+   }
+   catch(error){
+     console.log(error)
+   }
+}
+
 async function logoutUser(){
   Cookies.remove("token");
   setUser(null);
@@ -117,14 +152,15 @@ async function logoutUser(){
 
 
     useEffect(()=>{
-        fetchUser()
+        fetchUser();
+        getSavedBlogs();
     },[])
 
     useEffect(()=>{
       fetchBlogs();
     },[searchQuery,category])
 
-    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser,blogs,blogLoading,setcategory,setsearchQuery,searchQuery}}>
+    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser,blogs,blogLoading,setcategory,setsearchQuery,searchQuery,fetchBlogs,savedBlogs,getSavedBlogs}}>
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
         {children}
         <Toaster />
