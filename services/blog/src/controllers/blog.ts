@@ -77,17 +77,19 @@ export const getSingleBlog = TryCatch(async (req, res) => {
   const { data } = await axios.get(
     `${process.env.USER_SERVICE}/api/v1/user/${blog[0]?.author}`
   );
-
+  
   const responseData={
     blog: blog[0],
     author: data
   }
 
+  console.log(responseData);
+
   await redisClient.set(cacheKey,JSON.stringify(responseData),{EX:3600})
 
-  res.json({
+  res.json(
     responseData
-  });
+  );
 });
 
 
