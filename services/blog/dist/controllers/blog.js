@@ -57,4 +57,68 @@ export const getSingleBlog = TryCatch(async (req, res) => {
         responseData
     });
 });
+export const addComment = TryCatch(async (req, res) => {
+    const { id: blogid } = req.params;
+    const { comment } = req.body;
+    await sql `INSERT INTO comments (comment,blogid,userid,username) VALUES (${comment},${blogid},${req.user?._id},${req.user?.name}) RETURNING *`;
+    res.json({
+        message: "Comment Added",
+    });
+});
+export const getAllComments = TryCatch(async (req, res) => {
+    const { id } = req.params;
+    const comments = await sql `SELECT * FROM comments WHERE blogid = ${id} ORDER BY create_at DESC`;
+    res.json({ comments });
+});
+export const deleteComment = TryCatch(async (req, res) => {
+    const { commentid } = req.params;
+    const comment = await sql `SELECT * FROM comments WHERE id = ${commentid}`;
+    if (comment[0]?.userid !== req.user?._id) {
+        res.status(401).json({
+            message: "You are not owner of this comment"
+        });
+        return;
+    }
+    await sql `DELETE FROM comments WHERE id = ${commentid}`;
+    res.json({
+        message: "Comment Deleted"
+    });
+});
+export const savedBlog = TryCatch(async (req, res) => {
+    const { blogid } = req.params;
+    const userid = req.user?._id;
+    if (!blogid || !userid) {
+        return res.status(400).json({
+            message: "Missing blog id or user id",
+        });
+    }
+    // ✅ correct query
+    const existing = await sql `
+    SELECT * FROM savedblogs 
+    WHERE userid = ${userid} AND blogid = ${blogid}
+  `;
+    if (existing.length === 0) {
+        // ✅ correct insert
+        await sql `
+      INSERT INTO savedblogs (blogid, userid) 
+      VALUES (${blogid}, ${userid})
+    `;
+        return res.json({
+            message: "Blog saved",
+        });
+    }
+    else {
+        await sql `
+      DELETE FROM savedblogs 
+      WHERE userid = ${userid} AND blogid = ${blogid}
+    `;
+        return res.json({
+            message: "Blog unsaved",
+        });
+    }
+});
+export const getSavedBlog = TryCatch(async (req, res) => {
+    const blogs = await sql `SELECT * FROM savedblogs WHERE userid=${req.user?._id}`;
+    res.json(blogs);
+});
 //# sourceMappingURL=blog.js.map
