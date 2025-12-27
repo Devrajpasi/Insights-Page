@@ -4,7 +4,7 @@ export const connectRabbitMQ = async () => {
     try {
         const connection = await amqp.connect({
             protocol: 'amqp',
-            hostname: 'localhost',
+            hostname: process.env.RABBITMQ_HOST,
             port: 5672,
             username: process.env.RABBITMQ_USER,
             password: process.env.RABBITMQ_PASSWORD
