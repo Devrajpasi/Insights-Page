@@ -1,8 +1,8 @@
 "use client"
 
-export const user_service="http://localhost:5000"
-export const author_service="http://localhost:5001"
-export const blog_service="http://localhost:5002"
+export const user_service="https://user-service2-1.onrender.com"
+export const author_service="https://author-service-mo55.onrender.com"
+export const blog_service="https://blog-service-vclj.onrender.com"
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import Cookies  from 'js-cookie';
@@ -68,6 +68,8 @@ interface AppContextType{
     fetchBlogs:()=>Promise<void>;
     savedBlogs:SavedBlogType[] | null;
     getSavedBlogs:()=>Promise<void>
+    category: string;
+   
 }
 
 
@@ -160,7 +162,7 @@ async function logoutUser(){
       fetchBlogs();
     },[searchQuery,category])
 
-    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser,blogs,blogLoading,setcategory,setsearchQuery,searchQuery,fetchBlogs,savedBlogs,getSavedBlogs}}>
+    return <AppContext.Provider value={{user,isAuth,loading,setLoading,setIsAuth,setUser,logoutUser,blogs,blogLoading,setcategory,setsearchQuery,searchQuery,fetchBlogs,savedBlogs,getSavedBlogs,category}}>
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
         {children}
         <Toaster />
