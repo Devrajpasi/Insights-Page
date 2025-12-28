@@ -4,13 +4,13 @@ import React from 'react'
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
 import { Input } from './ui/input'
 
-import { BoxSelect, CheckSquare } from 'lucide-react' 
+import { BoxSelect, CheckSquare } from 'lucide-react'
 import { blogCategories } from '@/context/AppContext'
 import { useAppData } from '@/context/AppContext'
 
 const SideBar = () => {
-    
-    const { searchQuery, setsearchQuery, category, setcategory } = useAppData() 
+
+    const { searchQuery, setsearchQuery, category, setcategory } = useAppData()
 
     return (
         <Sidebar>
@@ -22,40 +22,48 @@ const SideBar = () => {
                     <SidebarGroupLabel>
                         Search
                     </SidebarGroupLabel>
-                    <Input 
-                        type="text" 
-                        placeholder="Search you desired blog" 
-                        onChange={(e) => setsearchQuery(e.target.value)} 
+                    <Input
+                        type="text"
+                        placeholder="Search you desired blog"
+                        onChange={(e) => setsearchQuery(e.target.value)}
                         value={searchQuery}
                     />
-                    
+
                     <SidebarGroupLabel>Categories</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {/* 'All' Button */}
+                    <SidebarMenu className="flex flex-col gap-2 p-2">
+
                         <SidebarMenuItem>
-                            <SidebarMenuButton 
+                            <div
                                 onClick={() => setcategory("")}
-                                isActive={category === ""} 
+                                className={`
+                cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-colors
+                ${category === ""
+                                        ? "bg-black text-white shadow-md"  // Active state for 'All'
+                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    }
+            `}
                             >
-                               
-                                {category === "" ? <CheckSquare className='text-primary'/> : <BoxSelect/>}
-                                <span>All</span>
-                            </SidebarMenuButton>
+                                All
+                            </div>
                         </SidebarMenuItem>
 
-                        {/* Mapped Categories */}
+
                         {blogCategories?.map((e, i) => {
-                            const isSelected = category === e; 
+                            const isSelected = category === e;
                             return (
                                 <SidebarMenuItem key={i}>
-                                    <SidebarMenuButton 
+                                    <div
                                         onClick={() => setcategory(e)}
-                                        isActive={isSelected}
+                                        className={`
+                        cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-colors
+                        ${isSelected
+                                                ? "bg-black text-white shadow-md"
+                                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                            }
+                    `}
                                     >
-                                         {/* 5. Swap Icon based on state */}
-                                        {isSelected ? <CheckSquare className='text-primary'/> : <BoxSelect/>}
-                                        <span>{e}</span>
-                                    </SidebarMenuButton>
+                                        {e}
+                                    </div>
                                 </SidebarMenuItem>
                             )
                         })}

@@ -2,92 +2,151 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { CircleUserRoundIcon, LogIn, Menu, X } from "lucide-react";
+import { 
+  CircleUserRound, 
+  LogIn, 
+  Menu, 
+  X, 
+  Sparkles, 
+  Bookmark 
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppData } from "@/context/AppContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { loading, isAuth } = useAppData();
+  
+  
+  const { loading, isAuth, user } = useAppData();
 
   return (
-    <nav className="bg-white shadow-md p-4 z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href={"/blogs"} className="text-xl font-bold text-gray-900">
-           The Insight Page
+    <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        
+        {/* Logo Section */}
+        <Link href={"/blogs"} className="flex items-center gap-2 group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-white transition-transform group-hover:scale-105">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            The Insight Page
+          </span>
         </Link>
-
         <div className="md:hidden">
-          <Button variant={"ghost"} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
-        <ul className="hidden md:flex justify-center items-center space-x-6 text-gray-700">
-          <li>
-            <Link href={"/blogs"} className="hover:text-blue-500">
-              Home
-            </Link>
-          </li>
+
+       
+        <div className="hidden md:flex items-center gap-6">
+          <Link href={"/blogs"}>
+             <Button variant="ghost" className="text-gray-600 hover:text-black">
+                Home
+             </Button>
+          </Link>
+
           {isAuth && (
-            <li>
-              <Link href={"/blog/saved"} className="hover:text-blue-500">
-                Saved Blogs
-              </Link>
-            </li>
+             <Link href={"/blog/saved"}>
+                <Button variant="ghost" className="text-gray-600 hover:text-black gap-2">
+                    <Bookmark className="h-4 w-4" />
+                    Saved
+                </Button>
+             </Link>
           )}
+
+          <div className="h-6 w-px bg-gray-200 mx-2"></div>
+
           {loading ? (
-            ""
+            <div className="h-8 w-8 animate-pulse rounded-full bg-gray-200" />
           ) : (
-            <li>
+            <>
               {isAuth ? (
-                <Link href={"/profile"} className="hover:text-blue-500">
-                  <CircleUserRoundIcon />
+                <Link href={"/profile"}>
+                 
+                  {user?.image ? (
+                    <img 
+                        src={user.image} 
+                        alt="Profile" 
+                        className="h-8 w-8 rounded-full object-cover border border-gray-200" 
+                    />
+                  ) : (
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                        <CircleUserRound className="h-6 w-6 text-gray-700" />
+                    </Button>
+                  )}
                 </Link>
               ) : (
-                <Link href={"/login"} className="hover:text-blue-500">
-                  <LogIn />
+                <Link href={"/login"}>
+                  <Button className="gap-2 rounded-full px-6">
+                    <LogIn className="h-4 w-4" />
+                    Login
+                  </Button>
                 </Link>
               )}
-            </li>
+            </>
           )}
-        </ul>
+        </div>
       </div>
+
+   
       <div
         className={cn(
-          "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
-          isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+          "md:hidden overflow-hidden border-b bg-white transition-all duration-300 ease-in-out",
+          isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
         )}
       >
-        <ul className="flex flex-col justify-center items-center space-y-4 p-4 text-gray-700 bg-white shadow-md">
-          <li>
-            <Link href={"/"} className="hover:text-blue-500">
-              Home
-            </Link>
-          </li>
+        <div className="flex flex-col space-y-4 p-6">
+          <Link 
+            href={"/"} 
+            className="text-sm font-medium text-gray-600 hover:text-black transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </Link>
+          
           {isAuth && (
-            <li>
-              <Link href={"/blog/saved"} className="hover:text-blue-500">
-                Saved Blogs
-              </Link>
-            </li>
+            <Link 
+                href={"/blog/saved"} 
+                className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-black transition-colors"
+                onClick={() => setIsOpen(false)}
+            >
+              <Bookmark className="h-4 w-4" />
+              Saved Blogs
+            </Link>
           )}
-          {loading ? (
-            ""
-          ) : (
-            <li>
-              {isAuth ? (
-                <Link href={"/profile"} className="hover:text-blue-500">
-                  <CircleUserRoundIcon />
+
+          <div className="border-t border-gray-100 pt-4">
+             {loading ? (
+                <div className="h-8 w-20 animate-pulse rounded bg-gray-200" />
+             ) : isAuth ? (
+                <Link 
+                    href={"/profile"} 
+                    className="flex items-center gap-2 text-sm font-medium text-gray-900"
+                    onClick={() => setIsOpen(false)}
+                >
+                 
+                  {user?.image ? (
+                    <img 
+                        src={user.image} 
+                        alt="Profile" 
+                        className="h-6 w-6 rounded-full object-cover" 
+                    />
+                  ) : (
+                    <CircleUserRound className="h-5 w-5" />
+                  )}
+                  My Profile
                 </Link>
-              ) : (
-                <Link href={"/login"} className="hover:text-blue-500">
-                  <LogIn />
+             ) : (
+                <Link href={"/login"} onClick={() => setIsOpen(false)}>
+                  <Button className="w-full gap-2">
+                    <LogIn className="h-4 w-4" />
+                    Log In
+                  </Button>
                 </Link>
-              )}
-            </li>
-          )}
-        </ul>
+             )}
+          </div>
+        </div>
       </div>
     </nav>
   );
