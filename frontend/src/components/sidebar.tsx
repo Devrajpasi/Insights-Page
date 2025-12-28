@@ -4,7 +4,7 @@ import React from 'react'
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
 import { Input } from './ui/input'
 import { BoxSelect } from 'lucide-react'
-import { blogCategories } from '@/app/blog/new/page'
+import { blogCategories } from '@/context/AppContext'
 import { useAppData } from '@/context/AppContext'
 
 const SideBar = () => {
