@@ -30,7 +30,7 @@ const LoginPage = () => {
   const {isAuth,user,loading,setIsAuth,setLoading,setUser}=useAppData();
 
     if(isAuth){
-       return redirect("")
+       return redirect("/blogs")
     }
 
   const responseGoogle = async (authResult: any) => {
@@ -79,7 +79,7 @@ const LoginPage = () => {
       <div className="w-[350px] m-auto mt-[200px]">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Login to The Reading Retreat</CardTitle>
+          <CardTitle>Login to The Insight Page</CardTitle>
           <CardDescription>Your go to blog app</CardDescription>
         </CardHeader>
         <CardContent>
