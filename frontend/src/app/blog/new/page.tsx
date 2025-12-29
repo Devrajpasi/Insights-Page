@@ -10,21 +10,13 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic';
 import Cookies from 'js-cookie';
 import { toast } from 'react-hot-toast'
-import { author_service } from '@/src/context/AppContext'
+import { author_service, useAppData,blogCategories } from '@/src/context/AppContext'
 import axios from 'axios';
 
 
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
-export const blogCategories = [
-    "Technology",
-    "Health",
-    "Finance",
-    "Travel",
-    "Education",
-    "Entertainment",
-    "Study"
-]
+
 
 const AddBlog = () => {
 
@@ -34,6 +26,8 @@ const AddBlog = () => {
 
     const editor = useRef(null);
     const [content, setContent] = useState('');
+
+    const {fetchBlogs}=useAppData();
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -96,7 +90,9 @@ const AddBlog = () => {
             });
 
             setContent("");
-
+            setTimeout(()=>{
+                fetchBlogs()
+            },4000)
         } catch (error) {
             toast.error("Error while adding blog");
             console.log(error);
