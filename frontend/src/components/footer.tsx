@@ -6,10 +6,10 @@ const Footer = () => {
   return (
     <div className="border-t border-gray-200 bg-white pt-16 pb-8">
       <div className="container mx-auto px-4">
-        {/* Top Section: Grid Layout */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           
-          {/* Column 1: Logo & Description */}
+         
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-white">
@@ -25,10 +25,9 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 2: Quick Links & Help (Nested Grid) */}
           <div className="col-span-1 md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
             
-            {/* Quick Links */}
+            
             <div>
               <h3 className="font-bold text-gray-900 mb-4">Quick Links</h3>
               <ul className="space-y-2 text-sm text-gray-600">
@@ -40,7 +39,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Need Help? */}
+           
             <div>
               <h3 className="font-bold text-gray-900 mb-4">Need Help?</h3>
               <ul className="space-y-2 text-sm text-gray-600">
@@ -51,7 +50,7 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Follow Us */}
+           
             <div>
               <h3 className="font-bold text-gray-900 mb-4">Follow Us</h3>
               <ul className="space-y-2 text-sm text-gray-600">
@@ -81,7 +80,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Section: Copyright */}
+        
         <div className="border-t border-gray-200 pt-8 text-center">
           <p className="text-gray-500 text-sm">
             Copyright 2025 © The Insight Page - All Right Reserved.
