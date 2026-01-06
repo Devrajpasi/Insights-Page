@@ -43,6 +43,30 @@ const BlogPage = () => {
 
     const [comments, setComments] = useState<Comment[]>([])
 
+    async function fetchSingleBlog() {
+        if(!id) return;
+        try {
+            setLoading(true);
+            const { data } = await axios.get<SingleBlogResponse>(`${blog_service}/api/v1/blog/${id}`)
+
+            setBlog(data.blog)
+            setAuthor(data.author)
+        }
+        catch (error) {
+            console.log(error);
+        }
+        finally {
+            setLoading(false);
+        }
+
+    }
+
+     useEffect(() => {
+        if(!id) return;
+
+        fetchSingleBlog()
+    }, [id]);
+
     async function fetchComment() {
         if(!id){
             return;
@@ -109,23 +133,7 @@ const BlogPage = () => {
     }
 
 
-    async function fetchSingleBlog() {
-        if(!id) return;
-        try {
-            setLoading(true);
-            const { data } = await axios.get<SingleBlogResponse>(`${blog_service}/api/v1/blog/${id}`)
-
-            setBlog(data.blog)
-            setAuthor(data.author)
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-
-    }
+    
 
     const deleteComment = async (id: string) => {
         if (confirm("Are you sure you want to delete this comment")) {
@@ -227,11 +235,7 @@ const BlogPage = () => {
     }
    }
 
-    useEffect(() => {
-        if(!id) return;
-
-        fetchSingleBlog()
-    }, [id]);
+   
 
     if (!blog) {
         return <Loading />
