@@ -44,6 +44,10 @@ const BlogPage = () => {
     const [comments, setComments] = useState<Comment[]>([])
 
     async function fetchComment() {
+        if(!id){
+            return;
+        }
+
         try {
             setLoading(true);
 
@@ -65,6 +69,9 @@ const BlogPage = () => {
     }
 
     useEffect(() => {
+        if(!id){
+            return;
+        }
         fetchComment()
     }, [id])
 
@@ -103,6 +110,7 @@ const BlogPage = () => {
 
 
     async function fetchSingleBlog() {
+        if(!id) return;
         try {
             setLoading(true);
             const { data } = await axios.get<SingleBlogResponse>(`${blog_service}/api/v1/blog/${id}`)
@@ -220,6 +228,8 @@ const BlogPage = () => {
    }
 
     useEffect(() => {
+        if(!id) return;
+
         fetchSingleBlog()
     }, [id]);
 
