@@ -1,91 +1,68 @@
-📝 Insights Page
-A Scalable, Microservices-Based Blogging Platform
+# 📝 Insights Page
+### A Scalable, Microservices-Based Blogging Platform
 
-Insights Page is a high-performance, distributed blogging platform built using a microservices architecture. It combines a modern Next.js 14 frontend with a robust Node.js / Express backend ecosystem.
+Insights Page is a high-performance, distributed blogging platform built using a microservices architecture.  
+It combines a modern **Next.js 14 frontend** with a robust **Node.js / Express backend ecosystem**.
 
-Designed with scalability, resilience, and performance in mind, the platform leverages RabbitMQ for asynchronous service communication and Redis for aggressive caching strategies.
-To enhance content creation, Google Gemini AI is integrated to provide intelligent, AI-assisted writing tools—delivering a modern and intuitive blogging experience.
+---
 
-✨ Key Features
-🔐 Authentication & Identity
+## ✨ Key Features
 
-Google OAuth 2.0 – Seamless and secure authentication
+### 🔐 Authentication & Identity
+- Google OAuth 2.0 — Seamless and secure authentication
+- JWT-based Auth — Stateless and scalable security model
+- Route Protection — Middleware-driven access control
+- Profile Management — Full CRUD for avatars, bios, and social links
 
-JWT-Based Auth – Stateless and scalable security model
+---
 
-Route Protection – Middleware-driven access control
+### ✍️ Content Engine
+- Rich Text Editor — Advanced WYSIWYG writing experience
+- Media Handling — Optimized image uploads via Cloudinary
+- Categorization & Search — Fast filtering and keyword discovery
+- RBAC — Author-only permissions for editing and deletion
 
-Profile Management – Full CRUD for avatars, bios, and social links
+---
 
-✍️ Content Engine
+### 🤖 AI-Powered Writing (Google Gemini)
+- Smart Titles — Context-aware AI title generation
+- Grammar Correction — AI-refined descriptions and text
+- Content Enhancement — Clean, structured, sanitized AI output
 
-Rich Text Editor – Advanced WYSIWYG editing experience
+---
 
-Media Handling – Optimized image uploads via Cloudinary
+### ❤️ Social Features
+- Bookmarking — Save & unsave blogs for later reading
+- Comments — Auth-protected discussion system
 
-Categorization & Search – Fast filtering and keyword-based discovery
+---
 
-RBAC – Author-only permissions for blog updates and deletion
+### ⚡ Performance & Infrastructure
+- Event-Driven Architecture — RabbitMQ for async messaging
+- Redis Caching — Read-through caching for blog feeds
+- Microservices — Independently scalable backend services
+- Type Safety — End-to-end TypeScript
 
-🤖 GenAI Integration (Google Gemini)
+---
 
-AI-Generated Titles – Context-aware blog title generation
+## 🛠 Tech Stack
 
-Grammar & Style Correction – Intelligent content refinement
+### Frontend
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS + shadcn/ui
+- Google OAuth Client
 
-Content Enhancement – Converts raw input into polished output
+### Backend (Microservices)
+- Node.js + Express
+- TypeScript
+- PostgreSQL
+- Redis
+- RabbitMQ
+- Google Gemini AI
 
-Sanitized Responses – Clean, frontend-ready AI outputs
-
-❤️ Social Interactions
-
-Bookmarking System – Save / unsave blogs for later reading
-
-Commenting Engine – Secure, authorization-gated discussions
-
-⚡ Performance & Infrastructure
-
-Event-Driven Architecture – RabbitMQ for cache invalidation & messaging
-
-High-Speed Caching – Redis (Read-Through strategy) to reduce DB load
-
-Microservices Design – Independent scaling & fault isolation
-
-End-to-End Type Safety – 100% TypeScript for reliability
-
-🛠 Tech Stack
-Frontend
-
-Next.js 14 (App Router)
-
-TypeScript
-
-Tailwind CSS + shadcn/ui
-
-Google OAuth Client
-
-Backend (Microservices)
-
-Node.js + Express
-
-TypeScript
-
-JWT Authentication
-
-PostgreSQL
-
-Redis
-
-RabbitMQ
-
-Google Gemini AI
-
-DevOps & Deployment
-
-Docker & Docker Hub
-
-Render (Backend Deployment)
-
-Multi-Stage Docker Builds
-
-Environment-Based Configuration
+### DevOps & Deployment
+- Docker & Docker Hub
+- Render (Backend Deployment)
+- Environment-based configuration
+- Multi-stage Docker builds
