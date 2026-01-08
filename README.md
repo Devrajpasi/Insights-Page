@@ -1,50 +1,57 @@
-📝 Insights Page — Microservices-Based Blogging Platform
+📝 Insights Page
+A Scalable, Microservices-Based Blogging Platform
 
-Insights Page is a high-performance, distributed blogging platform engineered with a microservices architecture. It leverages Next.js 14 for a robust frontend and a Node.js/Express backend ecosystem.
+Insights Page is a high-performance, distributed blogging platform built using a microservices architecture. It combines a modern Next.js 14 frontend with a robust Node.js / Express backend ecosystem.
 
-Designed for scalability and resilience, the system utilizes RabbitMQ for asynchronous communication between services and Redis for aggressive caching strategies. It integrates Google Gemini to provide AI-assisted writing tools, ensuring a modern, intelligent content creation experience.
+Designed with scalability, resilience, and performance in mind, the platform leverages RabbitMQ for asynchronous service communication and Redis for aggressive caching strategies.
+To enhance content creation, Google Gemini AI is integrated to provide intelligent, AI-assisted writing tools—delivering a modern and intuitive blogging experience.
 
 ✨ Key Features
 🔐 Authentication & Identity
-OAuth 2.0 Integration: Seamless sign-in via Google.
 
-Stateless Security: Robust JWT-based authentication flow.
+Google OAuth 2.0 – Seamless and secure authentication
 
-Route Protection: Secure, middleware-based access control for protected resources.
+JWT-Based Auth – Stateless and scalable security model
 
-Profile Management: Full CRUD operations for user profiles, avatars, bios, and social links.
+Route Protection – Middleware-driven access control
+
+Profile Management – Full CRUD for avatars, bios, and social links
 
 ✍️ Content Engine
-Rich Text Editing: Advanced WYSIWYG editor for immersive writing.
 
-Media Management: Optimized image uploads and delivery via Cloudinary.
+Rich Text Editor – Advanced WYSIWYG editing experience
 
-Granular Taxonomy: Category-based filtering and optimized search functionality.
+Media Handling – Optimized image uploads via Cloudinary
 
-RBAC: Author-exclusive permissions for editing and deletion.
+Categorization & Search – Fast filtering and keyword-based discovery
+
+RBAC – Author-only permissions for blog updates and deletion
 
 🤖 GenAI Integration (Google Gemini)
-Smart Titles: Context-aware title generation based on blog content.
 
-Grammar & Style: AI-driven description refinement and grammar correction.
+AI-Generated Titles – Context-aware blog title generation
 
-Content Polish: Automated refinement of raw inputs into structured, professional output.
+Grammar & Style Correction – Intelligent content refinement
 
-Sanitized Output: Parsed and formatted AI responses ready for frontend rendering.
+Content Enhancement – Converts raw input into polished output
+
+Sanitized Responses – Clean, frontend-ready AI outputs
 
 ❤️ Social Interactions
-Engagement: Bookmarking system (Save/Unsave) for reading lists.
 
-Discussions: Authorization-gated commenting system.
+Bookmarking System – Save / unsave blogs for later reading
+
+Commenting Engine – Secure, authorization-gated discussions
 
 ⚡ Performance & Infrastructure
-Event-Driven Architecture: RabbitMQ orchestrates cache invalidation and inter-service messaging.
 
-High-Speed Caching: Redis caching layer for blog feeds to minimize database reads (Read-Through pattern).
+Event-Driven Architecture – RabbitMQ for cache invalidation & messaging
 
-Microservices: Domain-driven service isolation for independent scaling and failure containment.
+High-Speed Caching – Redis (Read-Through strategy) to reduce DB load
 
-Type Safety: End-to-end TypeScript implementation for compile-time reliability.
+Microservices Design – Independent scaling & fault isolation
+
+End-to-End Type Safety – 100% TypeScript for reliability
 
 🛠 Tech Stack
 Frontend
@@ -71,16 +78,14 @@ Redis
 
 RabbitMQ
 
-
 Google Gemini AI
 
 DevOps & Deployment
 
 Docker & Docker Hub
 
-Render (backend deployment)
+Render (Backend Deployment)
 
-Environment-based configuration
+Multi-Stage Docker Builds
 
-Multi-stage Docker builds
-
+Environment-Based Configuration
