@@ -20,8 +20,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum unde
-              quaerat eveniet cumque accusamus atque qui error quo enim fugiat?
+            Stay ahead with deep insights into topics that matter—where experts and enthusiasts decode ideas and spark meaningful discussions.
             </p>
           </div>
 
