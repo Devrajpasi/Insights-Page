@@ -52,10 +52,9 @@ export const getSingleBlog = TryCatch(async (req, res) => {
         blog: blog[0],
         author: data
     };
+    console.log(responseData);
     await redisClient.set(cacheKey, JSON.stringify(responseData), { EX: 3600 });
-    res.json({
-        responseData
-    });
+    res.json(responseData);
 });
 export const addComment = TryCatch(async (req, res) => {
     const { id: blogid } = req.params;

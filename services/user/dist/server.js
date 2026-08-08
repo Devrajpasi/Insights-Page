@@ -11,8 +11,9 @@ cloudinary.config({
     api_secret: process.env.Cloud_Api_Secret
 });
 const app = express();
-app.use(express.json());
-app.use(cors());
+app.use(express.json()); // use express.json() middleware to parse incoming JSON requests
+app.use(cors()); // use cors() middleware to enable Cross-Origin Resource Sharing (CORS)
+// connect to the database
 connectDb();
 app.use("/api/v1", userRoutes);
 const port = process.env.PORT;

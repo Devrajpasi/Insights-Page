@@ -1,25 +1,28 @@
-import jwt, {} from 'jsonwebtoken';
+import jwt, {} from "jsonwebtoken";
 export const isAuth = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            res.status(401).json({
-                message: "Please Login - No auth Header",
-            });
-            return;
+            return res.status(401).json({ message: "Please login" });
         }
         const token = authHeader.split(" ")[1];
-        const decodeValue = jwt.verify(token, process.env.JWT_SECRET);
-        if (!decodeValue || !decodeValue.user) {
-            res.status(401).json({ message: "Please Login - Invalid token" });
-            return;
+        if (!token) {
+            return res.status(401).json({ message: "Invalid token format" });
         }
-        req.user = decodeValue.user;
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
+            throw new Error("JWT_SECRET not defined");
+        }
+        const decoded = jwt.verify(token, secret);
+        if (!decoded || !decoded.user) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+        req.user = decoded.user;
         next();
     }
     catch (error) {
-        console.log("JWT verification error");
-        res.status(401).json({ message: "Please Login - Jwt error" });
+        console.error("JWT verification failed:", error);
+        res.status(401).json({ message: "Authentication failed" });
     }
 };
 //# sourceMappingURL=isAuth.js.map

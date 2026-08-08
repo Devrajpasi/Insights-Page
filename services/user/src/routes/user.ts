@@ -9,6 +9,6 @@ router.post("/login", loginUser);
 router.get("/me",isAuth,myProfile)
 router.get("/user/:id",getUserProfile)
 router.post("/user/update",isAuth,updateUser)
-router.post("/user/update/pic",isAuth,uploadFile,updateProfilePic)
+router.post("/user/update/pic",isAuth,uploadFile,updateProfilePic) // (url, isAuth middleware, uploadFile middleware, updateProfilePic controller)
 
 export default router;

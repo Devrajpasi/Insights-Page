@@ -9,7 +9,7 @@ const TryCatch=(handler : RequestHandler): RequestHandler=> {
         {
             res.status(500).json({message:(error as Error).message})
         }
-    }
+    } 
 }  
 
 export default TryCatch
